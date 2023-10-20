@@ -31,7 +31,7 @@ public class Main {
                 }
                 Order.menus.clear();//static 메뉴선택 끝나서 장바구니 비워줌
                 /*개수 카운트 비워줌*/
-                Burger.printProductCount();
+                Burger.clear();
                 Drink.clear();
                 Icecream.clear();
                 Beer.clear();
@@ -39,7 +39,7 @@ public class Main {
             }else if(result ==2){//취소했음
                 Order.menus.clear();//static 메뉴선택 취소해서 장바구니 비워줌
                 /*개수 카운트 비워줌*/
-                Burger.printProductCount();
+                Burger.clear();
                 Drink.clear();
                 Icecream.clear();
                 Beer.clear();
