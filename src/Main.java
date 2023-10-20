@@ -223,8 +223,8 @@ public class Main {
                         "[ 총 판매 목록 ]");
                 for (Order o : orders) {
                     for (Product p : o.instanceMenus) {
-                        p.printDesc();//
-                        //System.out.println(m.getName() + "     | W " + m.getPrice() +  " | " + m.getDesc());
+                        //p.printDesc();//
+                        System.out.println(p.getName() + "     | W " + p.getPrice() +  " | " + p.getDesc());
                         total = total+ p.getPrice();
                     }
                 }
