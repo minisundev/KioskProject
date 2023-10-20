@@ -11,7 +11,7 @@ public class Beer extends Product{
         super.setPrice(price[select-1]);
         count[select-1] = count[select-1]+1;
     }
-    public void printDesc() {
+    public void printDescTotal() {
         int productCount = 0;
         for(int i=0;i<name.length;i++){//for문 돌면서 이름 일치하는 상품이 2개 이상 있으면 개수 출력
             if(name[i]==super.getName()){
@@ -22,6 +22,10 @@ public class Beer extends Product{
             System.out.println(super.getName() + "     | W " + super.getPrice() + " | " +productCount+ " | " + super.getDesc());
         }
     }
+    public void printDesc() {
+        System.out.println(super.getName() + "     | W " + this.getPrice() +  " | " + super.getDesc());
+    }
+
     public static void printProduct() {
         System.out.println("[ Burgers MENU ]\n");
         for(int i=0;i<count.length;i++){//for문 돌면서 있으면 출력
