@@ -26,7 +26,7 @@ public class Drink extends Product {
             }
         }
     }
-    public void printDesc() {
+    public void printDescTotal() {
         int productCount = 0;
         for(int i=0;i<name.length;i++){//for문 돌면서 이름 일치하는 상품이 2개 이상 있으면 개수 출력
             if(name[i]==super.getName()){
@@ -37,6 +37,10 @@ public class Drink extends Product {
             System.out.println(super.getName() + "     | W " + super.getPrice() + " | " +productCount+ " | " + super.getDesc());
         }
     }
+    public void printDesc() {
+        System.out.println(super.getName() + "     | W " + this.getPrice() +  " | " + super.getDesc());
+    }
+
 
     public static void clear(){
         for(int i=0;i<count.length;i++){
