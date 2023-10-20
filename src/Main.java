@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static ArrayList<Order> orders = new ArrayList<Order>();
-    public static ArrayList<Menu> menus = new ArrayList<Menu>();
+    public static ArrayList<Product> menus = new ArrayList<Product>();
 
     private static int waiting = 0;//대기인원
     public static int getWaiting(){
@@ -199,7 +199,7 @@ public class Main {
 
                     Product product  = new Product(m.getName(),m.getDesc(),m.getPrice());
                     Order order = new Order();
-                    order.instanceMenus = new ArrayList<Menu>();
+                    order.instanceMenus = new ArrayList<Product>();
                     order.instanceMenus.add(product);
                     orders.add(order);
                 }
@@ -222,10 +222,10 @@ public class Main {
                 System.out.println(
                         "[ 총 판매 목록 ]");
                 for (Order o : orders) {
-                    for (Menu m : o.instanceMenus) {
-                        m.printDesc();//ㅜㅜ이게 왜 안될까
-                        System.out.println(m.getName() + "     | W " + m.getPrice() +  " | " + m.getDesc());
-                        total = total+ ((Product)m).getPrice();
+                    for (Product p : o.instanceMenus) {
+                        p.printDesc();//
+                        //System.out.println(m.getName() + "     | W " + m.getPrice() +  " | " + m.getDesc());
+                        total = total+ p.getPrice();
                     }
                 }
                 System.out.println("[ Total ]\nW " + total);
