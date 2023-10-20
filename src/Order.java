@@ -62,6 +62,8 @@ public class Order {
                 case 4:
                     Beer.printProduct();
                     break;
+                default:
+                    continue;
             }
             int select = sc.nextInt();
             Product product;
@@ -95,7 +97,7 @@ public class Order {
                     }
                     break;
                 default:
-                    product = new Product();
+                    continue;
             }
             int confirm = 0;
             while (confirm == 0) {
