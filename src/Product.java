@@ -15,4 +15,7 @@ public class Product extends Menu {
     public double getPrice() {
         return this.price;
     }
+    public void setPrice(double d){
+        this.price = d;
+    }
 }

@@ -17,12 +17,22 @@ public class Menu {
         return 0;
     }
 
+    public void setPrice(){}
+
     public String getName() {
         return this.name;
     }
 
+    public void setName(String name){
+        this.name = name;
+
+    }
+
     public String getDesc() {
         return this.desc;
+    }
+    public void setDesc(String desc){
+        this.desc = desc;
     }
 
 }
