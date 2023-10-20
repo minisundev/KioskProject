@@ -29,9 +29,20 @@ public class Main {
                     order.instanceMenus.add(good);
                     orders.add(order);
                 }
-                Order.menus.clear();//static 메뉴선택 끝나서 삭제해줌
+                Order.menus.clear();//static 메뉴선택 끝나서 장바구니 비워줌
+                /*개수 카운트 비워줌*/
+                Burger.printProductCount();
+                Drink.clear();
+                Icecream.clear();
+                Beer.clear();
+
             }else if(result ==2){//취소했음
-                Order.menus.clear();//static 메뉴선택 취소해서 삭제해줌
+                Order.menus.clear();//static 메뉴선택 취소해서 장바구니 비워줌
+                /*개수 카운트 비워줌*/
+                Burger.printProductCount();
+                Drink.clear();
+                Icecream.clear();
+                Beer.clear();
             }else if(result==3){//총 판매목록
                 double total = 0;
                 System.out.println(
@@ -43,6 +54,7 @@ public class Main {
                     }
                 }
                 System.out.println("[ Total ]\nW " + total);
+
             }
 
         }

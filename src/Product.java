@@ -9,8 +9,8 @@ public class Product extends Menu {
         this.price = price;
     }
     public void printDesc() {
-        System.out.println(super.getName() + "     | W " + this.getPrice() + " | " + super.getDesc());
     }
+
 
     public double getPrice() {
         return this.price;

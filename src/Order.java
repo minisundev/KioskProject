@@ -99,7 +99,7 @@ public class Order {
             }
             int confirm = 0;
             while (confirm == 0) {
-                product.printDesc();
+                product.printDesc();//개수출력
                 confirm = confirmMenu();
             }
             if (confirm == 1) {
@@ -134,9 +134,15 @@ public class Order {
                     "[ Orders ]\n");
             double total = 0;
             for (Menu m : menus) {
-                m.printDesc();
+                //m.printDesc(); ->개수 출력해야 해서 바꿈
                 total = total + ((Product) m).getPrice();
             }
+            //개수 출력하는 함수
+            Burger.printProductCount();
+            Drink.printProductCount();
+            Icecream.printProductCount();
+            Beer.printProductCount();
+
             System.out.println("[ Total ]\nW " + total + "\n" +
                     "1. 주문      2. 메뉴판");
             int x = sc.nextInt();

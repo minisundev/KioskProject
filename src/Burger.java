@@ -1,34 +1,50 @@
 public class Burger extends Product {
+
+    private static int [] count ={0,0,0,0,0};
+    private static String [] name = {"ShackBurger","SmokeShack","Shroom Burger","Cheeseburger","Hamburger"};
+    private static String [] desc = {"토마토, 양상추, 쉑소스가 토핑된 치즈버거",
+            "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거",
+            "몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거",
+    "포테이토 번과 비프패티, 치즈가 토핑된 치즈버거",
+            "비프패티를 기반으로 야채가 들어간 기본버거"};
+    private static double [] price = {6.9,8.9,9.4,6.9,5.4};
     public Burger(int select) {
-        if (select == 1) {
-            super.setName("ShackBurger");
-            super.setDesc("토마토, 양상추, 쉑소스가 토핑된 치즈버거");
-            super.setPrice(6.9);
-        } else if (select == 2) {
-            super.setName("SmokeShack");
-            super.setDesc("베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거");
-            super.setPrice(8.9);
-        } else if (select == 3) {
-            super.setName("Shroom Burger");
-            super.setDesc("몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거");
-            super.setPrice(9.4);
-        } else if (select == 4) {
-            super.setName("Cheeseburger");
-            super.setDesc("포테이토 번과 비프패티, 치즈가 토핑된 치즈버거");
-            super.setPrice(6.9);
-        } else if (select == 5) {
-            super.setName("Hamburger");
-            super.setDesc("비프패티를 기반으로 야채가 들어간 기본버거");
-            super.setPrice(5.4);
+            super.setName(name[select-1]);
+            super.setDesc(desc[select-1]);
+            super.setPrice(price[select-1]);
+            count[select-1] = count[select-1]+1;
+    }
+
+    public void printDesc() {
+        int productCount = 0;
+        for(int i=0;i<name.length;i++){//for문 돌면서 이름 일치하는 상품이 2개 이상 있으면 개수 출력
+            if(name[i]==super.getName()){
+                productCount=count[i];
+            }
+        }
+        if(productCount>1){
+            System.out.println(super.getName() + "     | W " + super.getPrice() + " | " +productCount+ " | " + super.getDesc());
         }
     }
     public static void printProduct() {
-        System.out.println("[ Burgers MENU ]\n" +
-                "1. ShackBurger   | W 6.9 | 토마토, 양상추, 쉑소스가 토핑된 치즈버거\n" +
-                "2. SmokeShack    | W 8.9 | 베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거\n" +
-                "3. Shroom Burger | W 9.4 | 몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거\n" +
-                "4. Cheeseburger  | W 6.9 | 포테이토 번과 비프패티, 치즈가 토핑된 치즈버거\n" +
-                "5. Hamburger     | W 5.4 | 비프패티를 기반으로 야채가 들어간 기본버거"
-        );
+        System.out.println("[ Burgers MENU ]\n");
+        for(int i=0;i<count.length;i++){//for문 돌면서 있으면 출력
+            System.out.println((i+1)+". "+name[i]+"   | W "+price[i]+" | "+desc[i]);
+        }
+    }
+    public static void printProductCount() {
+        for(int i=0;i<count.length;i++){//for문 돌면서 있으면 출력
+            if(count[i]>1){//2개 이상이면 숫자도 출력
+                System.out.println((i+1)+". "+name[i]+"   | W "+price[i]+" | "+count[i]+" | "+desc[i]);
+            }else if(count[i]>0){
+                System.out.println((i+1)+". "+name[i]+"   | W "+price[i]+" | "+desc[i]);
+            }
+        }
+    }
+
+    public static void clear(){
+        for(int i=0;i<count.length;i++){
+            count[i]=0;
+        }
     }
 }
