@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static ArrayList<Order> orders = new ArrayList<Order>();
-    static ArrayList<Menu> menus = new ArrayList<Menu>();
+    public static ArrayList<Menu> menus = new ArrayList<Menu>();
 
     private static int waiting = 0;//대기인원
     public static int getWaiting(){
@@ -223,7 +223,7 @@ public class Main {
                         "[ 총 판매 목록 ]");
                 for (Order o : orders) {
                     for (Menu m : o.instanceMenus) {
-                        //m.printDesc();//이거 아래에서 구현했더니 여기서 안뜸 ㅜㅜ이게 왜 안될까
+                        m.printDesc();//ㅜㅜ이게 왜 안될까
                         System.out.println(m.getName() + "     | W " + m.getPrice() +  " | " + m.getDesc());
                         total = total+ ((Product)m).getPrice();
                     }
