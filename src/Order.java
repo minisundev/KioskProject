@@ -37,6 +37,8 @@ public class Order {
                 if (order == 1) {//1이면 주문취소 아니면 걍 반복
                     return 2;
                 }
+            }else if(menu==0){//총 판매 상품목록 출력
+                return 3;
             }
         }
     }
@@ -147,7 +149,6 @@ public class Order {
 
                 return x;
             } else if (x == 2) {
-
                 return x;
             }
         }

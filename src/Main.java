@@ -32,6 +32,17 @@ public class Main {
                 Order.menus.clear();//static 메뉴선택 끝나서 삭제해줌
             }else if(result ==2){//취소했음
                 Order.menus.clear();//static 메뉴선택 취소해서 삭제해줌
+            }else if(result==3){//총 판매목록
+                double total = 0;
+                System.out.println(
+                        "[ 총 판매 목록 ]");
+                for (Order o : orders) {
+                    for (Menu m : o.instanceMenus) {
+                        m.printDesc();
+                        total = total+ ((Product)m).getPrice();
+                    }
+                }
+                System.out.println("[ Total ]\nW " + total);
             }
 
         }
