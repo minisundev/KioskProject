@@ -11,10 +11,6 @@ public class Product extends Menu {
     public void printDesc() {
     }
 
-     public void printDescTotal(){
-    }
-
-
 
     public double getPrice() {
         return this.price;
