@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -54,3 +55,4 @@ public class Beer extends Product {
         return beers.size();
     }
 }
+
