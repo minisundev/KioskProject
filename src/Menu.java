@@ -12,7 +12,7 @@ public class Menu {
 
     public void printDesc() {
     }
-    public void printDescTotal(){}
+
     public double getPrice() {
         return 0;
     }
