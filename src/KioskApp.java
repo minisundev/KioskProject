@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class KioskApp {
+
+    public static ArrayList<Product> menus = new ArrayList<Product>();
     public static ArrayList<Order> orders = new ArrayList<Order>();
 
     public static ArrayList<Order> completedOrders = new ArrayList<Order>();
@@ -165,6 +167,7 @@ public class KioskApp {
                         continue;
                     }
                     break;
+                case 4:
 
                     if ((0 < select) && (select <= Beer.getSize())) {
                         product = Beer.select(select);
