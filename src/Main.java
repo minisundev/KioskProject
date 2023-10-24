@@ -25,6 +25,5 @@ public class Main {
                     System.out.println("다시 선택해 주세요");
             }
         }
-
     }
 }

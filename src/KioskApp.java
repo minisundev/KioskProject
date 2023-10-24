@@ -19,6 +19,51 @@ public class KioskApp {
     public static void increaseWaiting() {
         waiting = waiting + 1;
     }
+
+    public static void run(){
+        while(true) {//order반복
+            int result = selectMenu();//주문하지 않으면 리턴되지 않는 while로 감싸인 함수임
+            if (result == 1) {//주문했음
+                for (Menu m : menus) {
+
+                    Product product = new Product(m.getName(), m.getDesc(), m.getPrice());
+                    Order order = new Order();
+                    order.instanceMenus = new ArrayList<Product>();
+                    order.instanceMenus.add(product);
+                    orders.add(order);
+                }
+                menus.clear();//static 메뉴선택 끝나서 장바구니 비워줌
+                /*개수 카운트 비워줌*/
+                Burger.clear();
+                Drink.clear();
+                Icecream.clear();
+                Beer.clear();
+
+            } else if (result == 2) {//취소했음
+                menus.clear();//static 메뉴선택 취소해서 장바구니 비워줌
+                /*개수 카운트 비워줌*/
+                Burger.clear();
+                Drink.clear();
+                Icecream.clear();
+                Beer.clear();
+            } else if (result == 3) {//총 판매목록
+                double total = 0;
+                System.out.println(
+                        "[ 총 판매 목록 ]");
+                for (Order o : orders) {
+                    for (Product p : o.instanceMenus) {
+                        //p.printDesc();
+                        System.out.println(p.getName() + "     | W " + p.getPrice() + " | " + p.getDesc());
+                        total = total + p.getPrice();
+                    }
+                }
+                System.out.println("[ Total ]\nW " + total);
+
+            } else if(result == 0){//나가기 눌렀음
+                break;
+            }
+        }
+    }
     public static int selectMenu() {
         int menu;
         while (true) {
@@ -32,7 +77,8 @@ public class KioskApp {
                     "4. Beer            | 뉴욕 브루클린 브루어리에서 양조한 맥주\n\n" +
                     "[ ORDER MENU ]\n" +
                     "5. Order       | 장바구니를 확인 후 주문합니다.\n" +
-                    "6. Cancel      | 진행중인 주문을 취소합니다."
+                    "6. Cancel      | 진행중인 주문을 취소합니다.\n" +
+                    "7. 나가기      | 주문 앱에서 나갑니다."
             );
             menu = sc.nextInt();
 
@@ -50,6 +96,8 @@ public class KioskApp {
                 }
             }else if(menu==0){//총 판매 상품목록 출력
                 return 3;
+            }else if(menu ==7){//나가기, while문 break;
+                return 0;
             }
         }
     }
@@ -191,47 +239,4 @@ public class KioskApp {
         }
     }
 
-
-    public static void run(){
-        while(true) {//order반복
-            int result = selectMenu();//주문하지 않으면 리턴되지 않는 while로 감싸인 함수임
-            if (result == 1) {//주문했음
-                for (Menu m : menus) {
-
-                    Product product = new Product(m.getName(), m.getDesc(), m.getPrice());
-                    Order order = new Order();
-                    order.instanceMenus = new ArrayList<Product>();
-                    order.instanceMenus.add(product);
-                    orders.add(order);
-                }
-                menus.clear();//static 메뉴선택 끝나서 장바구니 비워줌
-                /*개수 카운트 비워줌*/
-                Burger.clear();
-                Drink.clear();
-                Icecream.clear();
-                Beer.clear();
-
-            } else if (result == 2) {//취소했음
-                menus.clear();//static 메뉴선택 취소해서 장바구니 비워줌
-                /*개수 카운트 비워줌*/
-                Burger.clear();
-                Drink.clear();
-                Icecream.clear();
-                Beer.clear();
-            } else if (result == 3) {//총 판매목록
-                double total = 0;
-                System.out.println(
-                        "[ 총 판매 목록 ]");
-                for (Order o : orders) {
-                    for (Product p : o.instanceMenus) {
-                        //p.printDesc();
-                        System.out.println(p.getName() + "     | W " + p.getPrice() + " | " + p.getDesc());
-                        total = total + p.getPrice();
-                    }
-                }
-                System.out.println("[ Total ]\nW " + total);
-
-            }
-        }
-    }
 }
