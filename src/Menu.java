@@ -1,3 +1,4 @@
+
 public class Menu {
     private String name;
     private String desc;
@@ -12,7 +13,7 @@ public class Menu {
 
     public void printDesc() {
     }
-
+    public void printDescTotal(){}
     public double getPrice() {
         return 0;
     }
@@ -36,3 +37,4 @@ public class Menu {
     }
 
 }
+

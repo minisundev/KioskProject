@@ -3,7 +3,10 @@ import java.util.Scanner;
 
 public class KioskApp {
     public static ArrayList<Order> orders = new ArrayList<Order>();
-    public static ArrayList<Product> menus = new ArrayList<Product>();
+
+    public static ArrayList<Order> completedOrders = new ArrayList<Order>();
+
+
 
 
     private static int waiting = 0;//대기인원
@@ -24,9 +27,11 @@ public class KioskApp {
         while(true) {//order반복
             int result = selectMenu();//주문하지 않으면 리턴되지 않는 while로 감싸인 함수임
             if (result == 1) {//주문했음
-                for (Menu m : menus) {
 
-                    Product product = new Product(m.getName(), m.getDesc(), m.getPrice());
+                for (Product m : menus) {
+
+                    Product product = new Product(m.getName(), m.getDesc(), m.getPrice(), m.getCount());
+
                     Order order = new Order();
                     order.instanceMenus = new ArrayList<Product>();
                     order.instanceMenus.add(product);
@@ -53,8 +58,10 @@ public class KioskApp {
                 for (Order o : orders) {
                     for (Product p : o.instanceMenus) {
                         //p.printDesc();
-                        System.out.println(p.getName() + "     | W " + p.getPrice() + " | " + p.getDesc());
-                        total = total + p.getPrice();
+
+                        System.out.println(p.getName() + "     | W " + p.getPrice() +" | "+p.getCount()+ " | " + p.getDesc());
+                        total = total + p.getPrice()*p.getCount();
+
                     }
                 }
                 System.out.println("[ Total ]\nW " + total);
@@ -78,7 +85,8 @@ public class KioskApp {
                     "[ ORDER MENU ]\n" +
                     "5. Order       | 장바구니를 확인 후 주문합니다.\n" +
                     "6. Cancel      | 진행중인 주문을 취소합니다.\n" +
-                    "7. 나가기      | 주문 앱에서 나갑니다."
+                    "7. Exit      | 주문 앱에서 나갑니다."
+
             );
             menu = sc.nextInt();
 
@@ -124,33 +132,43 @@ public class KioskApp {
                 default:
                     continue;
             }
+
+
             int select = sc.nextInt();
+
             Product product;
+
             switch (menu) {
                 case 1:
-                    if ((0 < select) && (select < 6)) {
-                        product = new Burger(select);
+                    if ((0 < select) && (select <= Burger.getSize())){
+                        product = Burger.select(select);
+
                     } else {
                         continue;
                     }
                     break;
                 case 2:
-                    if ((0 < select) && (select < 4)) {
-                        product = new Icecream(select);
+
+                    if ((0 < select) && (select <= Icecream.getSize())) {
+                        product = Icecream.select(select);
+
                     } else {
                         continue;
                     }
                     break;
                 case 3:
-                    if ((0 < select) && (select < 4)) {
-                        product = new Drink(select);
+
+                    if ((0 < select) && (select <= Drink.getSize())) {
+                        product = Drink.select(select);
+
                     } else {
                         continue;
                     }
                     break;
-                case 4:
-                    if ((0 < select) && (select < 4)) {
-                        product = new Beer(select);
+
+                    if ((0 < select) && (select <= Beer.getSize())) {
+                        product = Beer.select(select);
+
                     } else {
                         continue;
                     }
@@ -164,7 +182,20 @@ public class KioskApp {
                 confirm = confirmMenu();
             }
             if (confirm == 1) {
-                menus.add(product);
+
+
+                product.increaseCount();//산다 하면 물품 개수만 올려준다 동일한 이름으로 생성 x
+                boolean newMenu = true;
+                for (Product p : menus) {
+                    if(p.getId()==product.getId()){
+                        newMenu = false;
+                        break;
+                    }
+                }
+                if(newMenu == true){
+                    menus.add(product);
+                }
+
                 System.out.println(product.getName() + " 가 장바구니에 추가되었습니다.");
             }
             return;
@@ -192,11 +223,13 @@ public class KioskApp {
             Scanner sc = new Scanner(System.in);
 
             System.out.println("아래와 같이 주문 하시겠습니까?\n" +
-                    "[ Orders ]\n");
+
+                    "[ Orders ]");
             double total = 0;
-            for (Menu m : menus) {
+            for (Product p : menus) {
                 //m.printDesc(); ->개수 출력해야 해서 바꿈
-                total = total + ((Product) m).getPrice();
+                total = total + p.getPrice()*p.getCount();
+
             }
             //개수 출력하는 함수
             Burger.printProductCount();

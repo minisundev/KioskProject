@@ -1,46 +1,60 @@
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Drink extends Product {
-    private static int [] count ={0,0,0};
-    private static String [] name = {"Raspberry Lemonade","Lemonade","Fresh Brewed Iced Tea"};
-    private static String [] desc = {"쉐이크쉑 시그니처 레몬에이드에 상큼 달콤한 라즈베리가 더해진 시즌 한정 레몬에이드",
-            "매장에서 직접 만드는 상큼한 레몬에이드",
-            "직접 유기농 홍차를 우려낸 아이스 티"};
-    private static double [] price = {4.8,4.3,3.5};
-    public Drink(int select) {
-        super.setName(name[select-1]);
-        super.setDesc(desc[select-1]);
-        super.setPrice(price[select-1]);
-        count[select-1] = count[select-1]+1;
+
+    private static ArrayList<Drink> drinks = new ArrayList<>();
+//            Arrays.asList(
+//            new Drink("Raspberry Lemonade","쉐이크쉑 시그니처 레몬에이드에 상큼 달콤한 라즈베리가 더해진 시즌 한정 레몬에이드",6.5),
+//            new Drink("Lemonade","매장에서 직접 만드는 상큼한 레몬에이드", 6.5),
+//            new Drink("Fresh Brewed Iced Tea","직접 유기농 홍차를 우려낸 아이스 티",5.4)
+//            )
+//    );
+
+    public static Drink select(int select){
+        int index = select-1;
+
+        return drinks.get(index);
     }
-    public static void printProduct() {
-        System.out.println("[ Burgers MENU ]\n");
-        for(int i=0;i<count.length;i++){//for문 돌면서 있으면 출력
-            System.out.println((i+1)+". "+name[i]+"   | W "+price[i]+" | "+desc[i]);
-        }
+    public Drink(){
+
     }
-    public static void printProductCount() {
-        for(int i=0;i<count.length;i++){//for문 돌면서 있으면 출력
-            if(count[i]>1){
-                System.out.println((i+1)+". "+name[i]+"   | W "+price[i]+" | "+count[i]+" | "+desc[i]);
-            }else if(count[i]>0){
-                System.out.println((i+1)+". "+name[i]+"   | W "+price[i]+" | "+desc[i]);
-            }
-        }
+
+    public Drink(String name, String desc, double price){//새로 생성하는 생성자
+        super.setName(name);
+        super.setId("drink"+drinks.size());
+        super.setDesc(desc);
+        super.setCount(0);
+        super.setPrice(price);
+        drinks.add(this);
     }
-    public void printDesc() {
-        int productCount = 0;
-        for(int i=0;i<name.length;i++){//for문 돌면서 이름 일치하는 상품이 2개 이상 있으면 개수 출력
-            if(name[i]==super.getName()){
-                productCount=count[i];
-            }
-        }
-        if(productCount>1){
-            System.out.println(super.getName() + "     | W " + super.getPrice() + " | " +productCount+ " | " + super.getDesc());
+
+    public static void printProduct() {//메뉴 선택시 출력
+        System.out.println("[ Drinks MENU ]");
+        for (int i = 0; i < drinks.size(); i++) {//for문 돌면서 있으면 출력
+            System.out.println((i + 1) + ". " + drinks.get(i).getName() + "   | W " + drinks.get(i).getPrice() + " | " + drinks.get(i).getDesc());
         }
     }
 
-    public static void clear(){
-        for(int i=0;i<count.length;i++){
-            count[i]=0;
+    public static void printProductCount() {//버거별로 개수랑 같이 주문 화면에 목록 출력
+        for (Drink d : drinks) {//for문 돌면서 있으면 출력
+            if(d.getCount()>1){//2개 이상이면 숫자도 출력
+                System.out.println(". " + d.getName() + "   | W " + d.getPrice() + " | " + d.getCount() + " | " + d.getDesc());
+            }else if(d.getCount()>0) {
+                System.out.println(". " + d.getName() + "   | W " + d.getPrice() + " | " + d.getDesc());
+            }
         }
     }
+
+    public static void clear() {//count 비우는 함수
+        for (Drink d : drinks) {//for문 돌면서 있으면 출력
+            d.setCount(0);
+        }
+    }
+
+    public static int getSize(){
+        return drinks.size();
+    }
 }
+
