@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Product extends Menu {
     private double price;
@@ -21,8 +22,6 @@ public class Product extends Menu {
     public void printDesc() {
         System.out.println(super.getName() + "     | W " + this.getPrice() + " | " + super.getDesc());
     }
-
-
 
     /*getter,setter*/
     public double getPrice() {
