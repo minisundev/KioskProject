@@ -1,11 +1,11 @@
-
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Order {
     public ArrayList<Product> instanceMenus;
     private String offer = "";
 
-    private double total = 0;
+    private double total=0;
 
     public Order() {
     }
@@ -23,5 +23,6 @@ public class Order {
     public double getTotal(){
         return this.total;
     }
-}
 
+
+}

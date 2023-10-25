@@ -1,14 +1,19 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class KioskApp {
-
-    public static ArrayList<Product> menus = new ArrayList<Product>();
     public static ArrayList<Order> orders = new ArrayList<Order>();
-
     public static ArrayList<Order> completedOrders = new ArrayList<Order>();
+    public static ArrayList<Product> cart = new ArrayList<Product>();
+
+    public static ArrayList<Menu> menus = new ArrayList<Menu>();
 
 
+
+    public static Product selectP(int menu, int product){
+        return menus.get(menu-1).products.get(product-1);
+    }
 
 
     private static int waiting = 0;//대기인원
@@ -32,12 +37,13 @@ public class KioskApp {
 
 
             } else if (result == 2) {//취소했음
-                menus.clear();//static 메뉴선택 취소해서 장바구니 비워줌
+                cart.clear();//static 메뉴선택 취소해서 장바구니 비워줌
                 /*개수 카운트 비워줌*/
-                Burger.clear();
-                Drink.clear();
-                Icecream.clear();
-                Beer.clear();
+                for (Menu m : menus) {
+                    for (Product p : m.products) {
+                        p.setCount(0);
+                    }
+                }
             } else if (result == 3) {//총 판매목록
                 double total = 0;
                 System.out.println(
@@ -45,10 +51,8 @@ public class KioskApp {
                 for (Order o : orders) {
                     for (Product p : o.instanceMenus) {
                         //p.printDesc();
-
                         System.out.println(p.getName() + "     | W " + p.getPrice() +" | "+p.getCount()+ " | " + p.getDesc());
                         total = total + p.getPrice()*p.getCount();
-
                     }
                 }
                 System.out.println("[ Total ]\nW " + total);
@@ -64,35 +68,34 @@ public class KioskApp {
             Scanner sc = new Scanner(System.in);
             System.out.println("SHAKESHACK BURGER 에 오신걸 환영합니다.\n" +
                     "아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.\n" +
-                    "[ SHAKESHACK MENU ]\n" +
-                    "1. Burgers         | 앵거스 비프 통살을 다져만든 버거\n" +
-                    "2. Forzen Custard  | 매장에서 신선하게 만드는 아이스크림\n" +
-                    "3. Drinks          | 매장에서 직접 만드는 음료\n" +
-                    "4. Beer            | 뉴욕 브루클린 브루어리에서 양조한 맥주\n\n" +
-                    "[ ORDER MENU ]\n" +
-                    "5. Order       | 장바구니를 확인 후 주문합니다.\n" +
-                    "6. Cancel      | 진행중인 주문을 취소합니다.\n" +
-                    "7. Exit      | 주문 앱에서 나갑니다."
+                    "[ SHAKESHACK MENU ]\n");
 
+            int i = Menu.printIndex(menus);
+
+            System.out.println("[ ORDER MENU ]\n" +
+                    i+". Order       | 장바구니를 확인 후 주문합니다.\n" +
+                    (i+1)+". Cancel      | 진행중인 주문을 취소합니다.\n" +
+                    (i+2)+". Exit      | 주문 앱에서 나갑니다."
             );
             menu = sc.nextInt();
 
-            if ((0 < menu) && (menu < 5)) {//버거,아이스크림,음료,맥주
+            if ((0 < menu) && (menu <= menus.size())) {//메뉴 안에 있으면
                 selectProduct(menu);
-            } else if (menu == 5) {//Order
+            } else if (menu == menus.size()+1) {//Order
                 int order = order();
                 if (order == 1) {//1이면 주문 2이면 걍 반복
                     return 1;
                 }
-            } else if (menu == 6) {//Cancel
+            } else if (menu == (menus.size()+2)) {//Cancel
                 int order = cancel();
                 if (order == 1) {//1이면 주문취소 아니면 걍 반복
                     return 2;
                 }
-            }else if(menu==0){//총 판매 상품목록 출력
-                return 3;
-            }else if(menu ==7){//나가기, while문 break;
+            }
+            else if(menu == (menus.size()+3)){//나가기, while문 break;
                 return 0;
+            }else if(menu==0) {//총 판매 상품목록 출력
+                return 3;
             }
         }
     }
@@ -103,67 +106,20 @@ public class KioskApp {
             System.out.println("SHAKESHACK BURGER 에 오신걸 환영합니다.\n" +
                     "아래 상품메뉴판을 보시고 상품을 골라 입력해주세요.\n\n");
 
-            switch (menu) {
-                case 1:
-                    Burger.printProduct();
-                    break;
-                case 2:
-                    Icecream.printProduct();
-                    break;
-                case 3:
-                    Drink.printProduct();
-                    break;
-                case 4:
-                    Beer.printProduct();
-                    break;
-                default:
-                    continue;
-            }
-
+            Menu m = menus.get(menu-1);
+            System.out.println("[ "+m.getName()+" MENU ]");
+            Product.printIndex(m.products);
 
             int select = sc.nextInt();
 
             Product product;
 
-            switch (menu) {
-                case 1:
-                    if ((0 < select) && (select <= Burger.getSize())){
-                        product = Burger.select(select);
-
-                    } else {
-                        continue;
-                    }
-                    break;
-                case 2:
-
-                    if ((0 < select) && (select <= Icecream.getSize())) {
-                        product = Icecream.select(select);
-
-                    } else {
-                        continue;
-                    }
-                    break;
-                case 3:
-
-                    if ((0 < select) && (select <= Drink.getSize())) {
-                        product = Drink.select(select);
-
-                    } else {
-                        continue;
-                    }
-                    break;
-                case 4:
-
-                    if ((0 < select) && (select <= Beer.getSize())) {
-                        product = Beer.select(select);
-
-                    } else {
-                        continue;
-                    }
-                    break;
-                default:
-                    continue;
+            if ((0 < select) && (select <= m.products.size())){
+                product = selectP(menu,select);
+            }else{
+                continue;
             }
+
             int confirm = 0;
             while (confirm == 0) {
                 product.printDescTotal();//개수출력
@@ -171,19 +127,17 @@ public class KioskApp {
             }
             if (confirm == 1) {
 
-
                 product.increaseCount();//산다 하면 물품 개수만 올려준다 동일한 이름으로 생성 x
                 boolean newMenu = true;
-                for (Product p : menus) {
+                for (Product p : cart) {
                     if(p.getId()==product.getId()){
                         newMenu = false;
                         break;
                     }
                 }
                 if(newMenu == true){
-                    menus.add(product);
+                    cart.add(product);
                 }
-
                 System.out.println(product.getName() + " 가 장바구니에 추가되었습니다.");
             }
             return;
@@ -211,37 +165,46 @@ public class KioskApp {
             Scanner sc = new Scanner(System.in);
 
             System.out.println("아래와 같이 주문 하시겠습니까?\n" +
-
                     "[ Orders ]");
             double total = 0;
-            for (Product p : menus) {
+            for (Product p : cart) {
                 p.printDescTotal();
                 total = total + p.getPrice()*p.getCount();
             }
+
             System.out.println("[ Total ]\nW " + total + "\n" +
                     "1. 주문      2. 메뉴판");
             int x = sc.nextInt();
             if (x == 1) {//주문
                 increaseWaiting();//대기 인원 증가
-                for (Product m : menus) {
-                    Product product = new Product(m.getName(), m.getDesc(), m.getPrice(), m.getCount());
+
+                System.out.println("요청 사항이 있다면 입력해주세요 : ");
+                sc.nextLine();      //nextInt()에 먹힌 Enter키 처리
+                String request = sc.nextLine();
+                /*주문 객체 만드는 중*/
+                for (Product p : cart) {
+                    Product product = new Product(p.getName(), p.getDesc(), p.getPrice(), p.getCount());
                     Order order = new Order();
                     order.instanceMenus = new ArrayList<Product>();
                     order.instanceMenus.add(product);
                     order.setTotal(total);
+                    order.setOffer(request);//주문에 요청사항 추가
                     orders.add(order);
+
                 }
-                menus.clear();//static 메뉴선택 끝나서 장바구니 비워줌
+                cart.clear();//static 메뉴선택 끝나서 장바구니 비워줌
                 /*개수 카운트 비워줌*/
-                Burger.clear();
-                Drink.clear();
-                Icecream.clear();
-                Beer.clear();
+                for (Menu m : menus) {
+                    for (Product p : m.products) {
+                        p.setCount(0);
+                    }
+                }
 
                 System.out.println("주문이 완료되었습니다!\n\n" +
                         "대기번호는 [ " + getWaiting() + " ] 번 입니다.\n" +
                         "(3초후 메뉴판으로 돌아갑니다.)");
                 //3초 기다려야됨
+
                 return x;
             } else if (x == 2) {
                 return x;
