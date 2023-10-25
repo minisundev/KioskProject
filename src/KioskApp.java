@@ -3,20 +3,13 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class KioskApp {
-    public static ArrayList<Order> orders = new ArrayList<Order>();
-    public static ArrayList<Order> completedOrders = new ArrayList<Order>();
-    public static ArrayList<Product> cart = new ArrayList<Product>();
+    public static ArrayList<Order> orders = new ArrayList<Order>();//현재 주문 저장
+    public static ArrayList<Order> completedOrders = new ArrayList<Order>();//완료된 주문 저장
+    public static ArrayList<Product> cart = new ArrayList<Product>();//장바구니
 
-    public static ArrayList<Menu> menus = new ArrayList<Menu>();
+    public static ArrayList<Menu> menus = new ArrayList<Menu>();//메뉴들 저장
 
-
-
-    public static Product selectP(int menu, int product){
-        return menus.get(menu-1).products.get(product-1);
-    }
-
-
-    private static int waiting = 0;//대기인원
+    private static int waiting = 0;//대기인원 -> orders.size()로 하면 될듯함
 
     public static int getWaiting() {
         return waiting;
@@ -30,39 +23,7 @@ public class KioskApp {
         waiting = waiting + 1;
     }
 
-    public static void run(){
-        while(true) {//order반복
-            int result = selectMenu();//주문하지 않으면 리턴되지 않는 while로 감싸인 함수임
-            if (result == 1) {//주문했음
-
-
-            } else if (result == 2) {//취소했음
-                cart.clear();//static 메뉴선택 취소해서 장바구니 비워줌
-                /*개수 카운트 비워줌*/
-                for (Menu m : menus) {
-                    for (Product p : m.products) {
-                        p.setCount(0);
-                    }
-                }
-            } else if (result == 3) {//총 판매목록
-                double total = 0;
-                System.out.println(
-                        "[ 총 판매 목록 ]");
-                for (Order o : orders) {
-                    for (Product p : o.instanceMenus) {
-                        //p.printDesc();
-                        System.out.println(p.getName() + "     | W " + p.getPrice() +" | "+p.getCount()+ " | " + p.getDesc());
-                        total = total + p.getPrice()*p.getCount();
-                    }
-                }
-                System.out.println("[ Total ]\nW " + total);
-
-            } else if(result == 0){//나가기 눌렀음
-                break;
-            }
-        }
-    }
-    public static int selectMenu() {
+    public static void selectMenu() {
         int menu;
         while (true) {
             Scanner sc = new Scanner(System.in);
@@ -82,22 +43,32 @@ public class KioskApp {
             if ((0 < menu) && (menu <= menus.size())) {//메뉴 안에 있으면
                 selectProduct(menu);
             } else if (menu == menus.size()+1) {//Order
-                int order = order();
-                if (order == 1) {//1이면 주문 2이면 걍 반복
-                    return 1;
-                }
+                order();
             } else if (menu == (menus.size()+2)) {//Cancel
-                int order = cancel();
-                if (order == 1) {//1이면 주문취소 아니면 걍 반복
-                    return 2;
-                }
+                cancel();
             }
             else if(menu == (menus.size()+3)){//나가기, while문 break;
-                return 0;
+                return;
             }else if(menu==0) {//총 판매 상품목록 출력
-                return 3;
+                printAllProduct();
             }
         }
+    }
+
+    public static void printAllProduct(){
+
+        double total = 0;
+        System.out.println(
+                "[ 총 판매 목록 ]");
+        for (Order o : orders) {
+            for (Product p : o.instanceMenus) {
+                p.printDescTotal();
+                //System.out.println(p.getName() + "     | W " + p.getPrice() +" | "+p.getCount()+ " | " + p.getDesc());
+                total = total + p.getPrice()*p.getCount();
+            }
+        }
+        System.out.println("[ Total ]\nW " + total);
+
     }
 
     public static void selectProduct(int menu) {
@@ -111,7 +82,6 @@ public class KioskApp {
             Product.printIndex(m.products);
 
             int select = sc.nextInt();
-
             Product product;
 
             if ((0 < select) && (select <= m.products.size())){
@@ -120,13 +90,24 @@ public class KioskApp {
                 continue;
             }
 
-            int confirm = 0;
-            while (confirm == 0) {
-                product.printDescTotal();//개수출력
-                confirm = confirmMenu();
-            }
-            if (confirm == 1) {
+            product.printDescTotal();//개수출력
+            confirmMenu(product);
 
+            return;
+        }
+    }
+
+    public static Product selectP(int menu, int product){
+        return menus.get(menu-1).products.get(product-1);
+    }
+
+    public static void confirmMenu(Product product) {
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?\n" +
+                    "1. 확인        2. 취소");
+            int confirm = sc.nextInt();
+            if (confirm == 1) {
                 product.increaseCount();//산다 하면 물품 개수만 올려준다 동일한 이름으로 생성 x
                 boolean newMenu = true;
                 for (Product p : cart) {
@@ -139,28 +120,14 @@ public class KioskApp {
                     cart.add(product);
                 }
                 System.out.println(product.getName() + " 가 장바구니에 추가되었습니다.");
-            }
-            return;
-        }
-    }
-
-
-    public static int confirmMenu() {
-        while (true) {
-
-            Scanner sc = new Scanner(System.in);
-            System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?\n" +
-                    "1. 확인        2. 취소");
-            int confirm = sc.nextInt();
-            if (confirm == 1) {
-                return confirm;
-            } else if (confirm == 2) {
-                return confirm;
+                return;
+            }else if(confirm == 2){
+                return;
             }
         }
     }
 
-    public static int order() {
+    public static void order() {
         while (true) {
             Scanner sc = new Scanner(System.in);
 
@@ -205,14 +172,14 @@ public class KioskApp {
                         "(3초후 메뉴판으로 돌아갑니다.)");
                 //3초 기다려야됨
 
-                return x;
+                return;
             } else if (x == 2) {
-                return x;
+                return;
             }
         }
     }
 
-    public static int cancel() {
+    public static void cancel() {
         while (true) {
             Scanner sc = new Scanner(System.in);
 
@@ -222,10 +189,16 @@ public class KioskApp {
             if (x == 1) {//주문취소
                 System.out.println("취소가 완료되었습니다!\n\n");
                 //3초 기다려야됨
-                return x;
+                cart.clear();//static 메뉴선택 취소해서 장바구니 비워줌
+                /*개수 카운트 비워줌*/
+                for (Menu m : menus) {
+                    for (Product p : m.products) {
+                        p.setCount(0);
+                    }
+                }
+                return;
             } else if (x == 2) {
-
-                return x;
+                return;
             }
         }
     }
